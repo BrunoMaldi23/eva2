@@ -4,70 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicio 1.3 - Manipulación del DOM</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
-</head>
-<body class="bg-light">
-    <div class="container mt-4">
-        <!-- Botón volver con history -->
-        <div class="mb-3">
-            <button onclick="volverConHistory()" class="btn btn-secondary">← Volver al menú</button>
-        </div>
+    
+    <style>
+        :root {
+            --primary-color: #b91c1c; /* Rojo coral quemado */
+            --secondary-color: #475569; /* Gris pizarra */
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
 
-        <div class="card shadow-sm">
-            <div class="card-header bg-danger text-white text-center">
-                <h3 class="mb-0">Ejercicio 1.3: Manipulación del DOM</h3>
-                <small>Cambiar texto y color al hacer clic</small>
+        body {
+            background: var(--bg-gradient) !important;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .content-wrapper {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .custom-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            background-color: #ffffff;
+        }
+
+        .card-header-danger {
+            background-color: var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+
+        /* Botón volver - HOVER CON TONO ROJO SUAVE */
+        .btn-back {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 1px solid #cbd5e1;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+        }
+        .btn-back:hover {
+            background-color: #fef2f2; /* Fondo rosa/rojo muy claro */
+            color: var(--primary-color); /* Texto rojo coral */
+            border-color: #fca5a5;
+            transform: translateX(-3px);
+        }
+
+        .interactive-zone {
+            background-color: #f8fafc !important;
+            border: 2px dashed #cbd5e1 !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        #miParrafo {
+            font-size: 1.1rem;
+            color: #334155;
+            transition: all 0.3s ease;
+        }
+
+        /* Botón de acción - HOVER LUMINOSO (SE ACLARA) */
+        .btn-action {
+            background-color: #1e3a8a; /* Azul base */
+            border: none;
+            color: white;
+            font-weight: 500;
+            padding: 10px 28px;
+            border-radius: 8px;
+            transition: all 0.25s ease-in-out;
+        }
+        .btn-action:hover {
+            background-color: #2563eb; /* Azul brillante y vivo */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .explanation-card {
+            background-color: #ffffff;
+            border: none;
+            border-left: 4px solid var(--secondary-color);
+            border-radius: 4px 12px 12px 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="content-wrapper">
+            
+            <div class="mb-3 text-start">
+                <button onclick="volverConHistory()" class="btn btn-back px-3 py-2">← Volver al menú</button>
             </div>
-            <div class="card-body text-center">
-                <!-- EXACTAMENTE el HTML solicitado en el enunciado -->
-                <div id="miDiv" class="p-4 border rounded bg-white">
-                    <p id="miParrafo">Hola, soy un párrafo.</p>
-                    <button id="miBoton" class="btn btn-primary">Haz clic</button>
+
+            <div class="card custom-card">
+                <div class="card-header card-header-danger text-center py-4">
+                    <h3 class="h4 mb-1 fw-bold">Ejercicio 1.3: Manipulación del DOM</h3>
+                    <p class="mb-0 small opacity-75" style="font-size: 0.85rem;">Cambiar texto y color al hacer clic</p>
                 </div>
-                
-                <!-- Nota: el enunciado original tiene un error (</button> mal escrito) -->
-                <!-- Aquí lo corregí para que funcione correctamente -->
+                <div class="card-body p-4 text-center">
+                    
+                    <div id="miDiv" class="interactive-zone p-5 my-3">
+                        <p id="miParrafo" class="mb-4 fw-medium">Hola, soy un párrafo.</p>
+                        <button id="miBoton" class="btn btn-action shadow-sm">Haz clic aquí</button>
+                    </div>
+                    
+                </div>
             </div>
-        </div>
-        
-        <!-- Información adicional explicativa -->
-        <div class="alert alert-secondary mt-3">
-            <strong>💡 Explicación de ubicación del script:</strong> El script está al final del <code>&lt;body&gt;</code> 
-            para asegurar que todos los elementos del DOM (como el div, párrafo y botón) ya estén cargados antes de intentar 
-            acceder a ellos con <code>getElementById</code>. Si el script estuviera en el <code>&lt;head&gt;</code>, 
-            los elementos aún no existirían y daría error.
+            
+            <div class="explanation-card p-4 mt-4">
+                <div class="d-flex gap-2 align-items-center mb-2">
+                    <span>💡</span>
+                    <strong class="text-dark">Explicación de ubicación del script:</strong>
+                </div>
+                <p class="small mb-0 lh-base">
+                    El script está posicionado estratégicamente al final del <code>&lt;body&gt;</code> para asegurar que todos los elementos HTML (el contenedor, el párrafo y el botón) ya existan en la memoria del navegador antes de intentar seleccionarlos con <code>getElementById</code>. Si se incluyera en el <code>&lt;head&gt;</code> sin atributos especiales, el código fallaría arrojando un valor nulo (<code>null</code>) debido a que los elementos aún no habrían sido creados en el DOM.
+                </p>
+            </div>
+
         </div>
     </div>
 
-    <!-- SCRIPT UBICADO AL FINAL DEL BODY - CRÍTICO PARA QUE FUNCIONE -->
     <script>
-        // EXPLICACIÓN DE UBICACIÓN DEL SCRIPT (requerido por el enunciado):
-        // =================================================================
-        // Este script se coloca al final del body porque así nos aseguramos
-        // de que el navegador ya haya leído y construido todos los elementos
-        // HTML (DOM) antes de ejecutar el código. Si lo pusiéramos en el <head>,
-        // document.getElementById("miBoton") retornaría null porque el botón
-        // aún no ha sido creado en el DOM.
-        
         // Obtener referencias a los elementos
         const boton = document.getElementById("miBoton");
         const parrafo = document.getElementById("miParrafo");
+        const contenedorDiv = document.getElementById("miDiv");
         
-        // Verificar que los elementos existen (buena práctica de validación)
+        // Verificar que los elementos existen (Buena práctica de desarrollo)
         if (boton && parrafo) {
             // Agregar el evento click al botón
             boton.addEventListener("click", function() {
                 // Cambiar el texto del párrafo
                 parrafo.textContent = "¡ES INCREÍBLE!";
-                // Cambiar el color del texto a rojo
-                parrafo.style.color = "red";
-                // Opcional: agregar negrita para mejor visualización
-                parrafo.style.fontWeight = "bold";
-                parrafo.style.fontSize = "1.5rem";
+                
+                // Cambiar las propiedades de estilo dinámicamente con un look moderno
+                parrafo.style.color = "#dc2626"; // Rojo intenso semántico
+                parrafo.style.fontWeight = "700";
+                parrafo.style.fontSize = "1.6rem";
+                
+                // Extra visual: Cambiar ligeramente el fondo del div contenedor al hacer clic para dar feedback táctil
+                if (contenedorDiv) {
+                    contenedorDiv.style.backgroundColor = "#fef2f2";
+                    contenedorDiv.style.borderColor = "#fca5a5";
+                }
             });
         } else {
-            console.error("No se encontraron los elementos del DOM");
+            console.error("No se encontraron los elementos necesarios en el DOM");
         }
     </script>
     

@@ -4,51 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicio 1.1 - PUEDO / GANAR</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
+    
     <style>
-        .linea-resultado {
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-            padding: 8px;
-            border-bottom: 1px solid #dee2e6;
+        :root {
+            --primary-color: #1e3a8a; /* Azul profundo */
+            --secondary-color: #475569; /* Gris pizarra */
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
         }
-        .numero-normal { color: #0d6efd; }
-        .puedo { color: #198754; font-weight: bold; }
-        .ganar { color: #dc3545; font-weight: bold; }
-        .puedo-ganar { color: #fd7e14; font-weight: bold; background-color: #fff3cd; }
+
+        body {
+            background: var(--bg-gradient) !important;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .content-wrapper {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .custom-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            background-color: #ffffff;
+        }
+
+        .card-header-primary {
+            background-color: var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+
+        /* Botón volver - HOVER LUMINOSO Y SUAVE */
+        .btn-back {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 1px solid #cbd5e1;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+        }
+        .btn-back:hover {
+            background-color: #eff6ff; /* Fondo azul muy claro */
+            color: var(--primary-color); /* Texto cambia a azul principal */
+            border-color: #bfdbfe;
+            transform: translateX(-3px);
+        }
+
+        /* Botón Generar - HOVER VIVO (SE ACLARA) */
+        .btn-action {
+            background-color: var(--primary-color);
+            border: none;
+            color: white;
+            font-weight: 500;
+            transition: all 0.25s ease-in-out;
+            border-radius: 8px;
+        }
+        .btn-action:hover {
+            background-color: #2563eb; /* Azul brillante y vivo */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .resultado-container {
+            background-color: #f8fafc !important;
+            border: 1px solid #e2e8f0;
+            color: #334155 !important;
+        }
+
+        .linea-resultado {
+            font-size: 0.95rem;
+            padding: 10px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .linea-resultado:last-child {
+            border-bottom: none;
+        }
+
+        .numero-normal { color: var(--secondary-color); font-weight: 500; }
+        
+        .badge-puedo { 
+            background-color: #dbeafe; color: #1e40af; 
+            padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem;
+        }
+        .badge-ganar { 
+            background-color: #dcfce7; color: #166534; 
+            padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem;
+        }
+        .badge-puedo-ganar { 
+            background-color: #fef2f2; color: #991b1b; 
+            padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.85rem;
+            border: 1px dashed #fca5a5;
+        }
     </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-4">
-        <!-- Botón volver con history -->
-        <div class="mb-3">
-            <button onclick="volverConHistory()" class="btn btn-secondary">← Volver al menú</button>
-        </div>
+<body>
+    <div class="container py-5">
+        <div class="content-wrapper">
+            
+            <div class="mb-3 text-start">
+                <button onclick="volverConHistory()" class="btn btn-back px-3 py-2">← Volver al menú</button>
+            </div>
 
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white text-center">
-                <h3 class="mb-0">Ejercicio 1.1: Números especiales</h3>
-                <small>Múltiplos de 2 → "PUEDO" | Múltiplos de 3 → "GANAR" | Múltiplos de ambos → "PUEDOGANAR"</small>
-            </div>
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-8">
-                        <label for="numeroInput" class="form-label fw-bold">Ingrese un número entero positivo:</label>
-                        <input type="number" id="numeroInput" class="form-control form-control-lg" placeholder="Ejemplo: 15" min="1">
+            <div class="card custom-card">
+                <div class="card-header card-header-primary text-center py-4">
+                    <h3 class="h4 mb-1 fw-bold">Ejercicio 1.1: Números Especiales</h3>
+                    <p class="mb-0 small opacity-75" style="font-size: 0.85rem;">
+                        Múltiplos de 2 ➔ "PUEDO" | Múltiplos de 3 ➔ "GANAR" | Múltiplos de ambos ➔ "PUEDOGANAR"
+                    </p>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-8 col-sm-9">
+                            <label for="numeroInput" class="form-label fw-semibold text-secondary small mb-2">Ingrese un número entero positivo:</label>
+                            <input type="number" id="numeroInput" class="form-control border-light-subtle py-2" placeholder="Ejemplo: 15" min="1">
+                        </div>
+                        <div class="col-4 col-sm-3">
+                            <button id="btnGenerar" class="btn btn-action py-2 w-100">🔍 Generar</button>
+                        </div>
                     </div>
-                    <div class="col-md-4 d-flex align-items-end">
-                        <button id="btnGenerar" class="btn btn-primary btn-lg w-100">🔍 Generar</button>
+                    
+                    <div class="mt-4">
+                        <h5 class="text-secondary fw-semibold h6 mb-3">Resultado:</h5>
+                        <div id="resultado" class="resultado-container p-1 rounded" style="max-height: 350px; overflow-y: auto;">
+                            <div class="text-muted text-center py-4 small fst-italic">Esperando que ingreses un número...</div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="mt-4">
-                    <h5>Resultado:</h5>
-                    <div id="resultado" class="resultado-numeros bg-dark text-white p-3 rounded" style="max-height: 400px; overflow-y: auto;">
-                        <span class="text-muted">Esperando entrada...</span>
-                    </div>
-                </div>
             </div>
+
         </div>
     </div>
 
@@ -62,13 +152,13 @@
                 let esMultiplo3 = (i % 3 === 0);
                 
                 if (esMultiplo2 && esMultiplo3) {
-                    resultados.push({ valor: i, texto: "PUEDOGANAR", clase: "puedo-ganar" });
+                    resultados.push({ valor: i, texto: "PUEDOGANAR", clase: "badge-puedo-ganar" });
                 } 
                 else if (esMultiplo2) {
-                    resultados.push({ valor: i, texto: "PUEDO", clase: "puedo" });
+                    resultados.push({ valor: i, texto: "PUEDO", clase: "badge-puedo" });
                 } 
                 else if (esMultiplo3) {
-                    resultados.push({ valor: i, texto: "GANAR", clase: "ganar" });
+                    resultados.push({ valor: i, texto: "GANAR", clase: "badge-ganar" });
                 } 
                 else {
                     resultados.push({ valor: i, texto: i.toString(), clase: "numero-normal" });
@@ -84,8 +174,14 @@
             
             resultados.forEach(r => {
                 const div = document.createElement("div");
-                div.className = `linea-resultado ${r.clase}`;
-                div.innerHTML = `➡️ ${r.valor}: <strong>${r.texto}</strong>`;
+                div.className = "linea-resultado";
+                
+                if (r.clase === "numero-normal") {
+                    div.innerHTML = `<span class="text-muted small">Número ${r.valor}</span> <span class="${r.clase}">${r.texto}</span>`;
+                } else {
+                    div.innerHTML = `<span class="fw-semibold text-secondary small">Número ${r.valor}</span> <span class="${r.clase}">${r.texto}</span>`;
+                }
+                
                 contenedor.appendChild(div);
             });
         }
@@ -94,10 +190,10 @@
         document.getElementById("btnGenerar").addEventListener("click", function() {
             let numero = parseInt(document.getElementById("numeroInput").value);
             
-            // Validación segura (buena práctica vista en la cápsula)
+            // Validación segura
             if (isNaN(numero) || numero < 1) {
                 document.getElementById("resultado").innerHTML = 
-                    '<div class="alert alert-danger m-0">⚠️ Error: Debe ingresar un número válido mayor o igual a 1.</div>';
+                    '<div class="alert alert-danger m-2 py-2 small">⚠️ Error: Debe ingresar un número válido mayor o igual a 1.</div>';
                 return;
             }
             
