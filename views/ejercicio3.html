@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1.3 - Manipulación del DOM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-4">
+        <!-- Botón volver con history -->
+        <div class="mb-3">
+            <button onclick="volverConHistory()" class="btn btn-secondary">← Volver al menú</button>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white text-center">
+                <h3 class="mb-0">Ejercicio 1.3: Manipulación del DOM</h3>
+                <small>Cambiar texto y color al hacer clic</small>
+            </div>
+            <div class="card-body text-center">
+                <!-- EXACTAMENTE el HTML solicitado en el enunciado -->
+                <div id="miDiv" class="p-4 border rounded bg-white">
+                    <p id="miParrafo">Hola, soy un párrafo.</p>
+                    <button id="miBoton" class="btn btn-primary">Haz clic</button>
+                </div>
+                
+                <!-- Nota: el enunciado original tiene un error (</button> mal escrito) -->
+                <!-- Aquí lo corregí para que funcione correctamente -->
+            </div>
+        </div>
+        
+        <!-- Información adicional explicativa -->
+        <div class="alert alert-secondary mt-3">
+            <strong>💡 Explicación de ubicación del script:</strong> El script está al final del <code>&lt;body&gt;</code> 
+            para asegurar que todos los elementos del DOM (como el div, párrafo y botón) ya estén cargados antes de intentar 
+            acceder a ellos con <code>getElementById</code>. Si el script estuviera en el <code>&lt;head&gt;</code>, 
+            los elementos aún no existirían y daría error.
+        </div>
+    </div>
+
+    <!-- SCRIPT UBICADO AL FINAL DEL BODY - CRÍTICO PARA QUE FUNCIONE -->
+    <script>
+        // EXPLICACIÓN DE UBICACIÓN DEL SCRIPT (requerido por el enunciado):
+        // =================================================================
+        // Este script se coloca al final del body porque así nos aseguramos
+        // de que el navegador ya haya leído y construido todos los elementos
+        // HTML (DOM) antes de ejecutar el código. Si lo pusiéramos en el <head>,
+        // document.getElementById("miBoton") retornaría null porque el botón
+        // aún no ha sido creado en el DOM.
+        
+        // Obtener referencias a los elementos
+        const boton = document.getElementById("miBoton");
+        const parrafo = document.getElementById("miParrafo");
+        
+        // Verificar que los elementos existen (buena práctica de validación)
+        if (boton && parrafo) {
+            // Agregar el evento click al botón
+            boton.addEventListener("click", function() {
+                // Cambiar el texto del párrafo
+                parrafo.textContent = "¡ES INCREÍBLE!";
+                // Cambiar el color del texto a rojo
+                parrafo.style.color = "red";
+                // Opcional: agregar negrita para mejor visualización
+                parrafo.style.fontWeight = "bold";
+                parrafo.style.fontSize = "1.5rem";
+            });
+        } else {
+            console.error("No se encontraron los elementos del DOM");
+        }
+    </script>
+    
+    <script src="../js/main.js"></script>
+</body>
+</html>

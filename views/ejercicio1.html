@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1.1 - PUEDO / GANAR</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .linea-resultado {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            padding: 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .numero-normal { color: #0d6efd; }
+        .puedo { color: #198754; font-weight: bold; }
+        .ganar { color: #dc3545; font-weight: bold; }
+        .puedo-ganar { color: #fd7e14; font-weight: bold; background-color: #fff3cd; }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container mt-4">
+        <!-- Botón volver con history -->
+        <div class="mb-3">
+            <button onclick="volverConHistory()" class="btn btn-secondary">← Volver al menú</button>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0">Ejercicio 1.1: Números especiales</h3>
+                <small>Múltiplos de 2 → "PUEDO" | Múltiplos de 3 → "GANAR" | Múltiplos de ambos → "PUEDOGANAR"</small>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label for="numeroInput" class="form-label fw-bold">Ingrese un número entero positivo:</label>
+                        <input type="number" id="numeroInput" class="form-control form-control-lg" placeholder="Ejemplo: 15" min="1">
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button id="btnGenerar" class="btn btn-primary btn-lg w-100">🔍 Generar</button>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Resultado:</h5>
+                    <div id="resultado" class="resultado-numeros bg-dark text-white p-3 rounded" style="max-height: 400px; overflow-y: auto;">
+                        <span class="text-muted">Esperando entrada...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función que resuelve el problema de múltiplos
+        function procesarNumeros(hasta) {
+            let resultados = [];
+            
+            for (let i = 1; i <= hasta; i++) {
+                let esMultiplo2 = (i % 2 === 0);
+                let esMultiplo3 = (i % 3 === 0);
+                
+                if (esMultiplo2 && esMultiplo3) {
+                    resultados.push({ valor: i, texto: "PUEDOGANAR", clase: "puedo-ganar" });
+                } 
+                else if (esMultiplo2) {
+                    resultados.push({ valor: i, texto: "PUEDO", clase: "puedo" });
+                } 
+                else if (esMultiplo3) {
+                    resultados.push({ valor: i, texto: "GANAR", clase: "ganar" });
+                } 
+                else {
+                    resultados.push({ valor: i, texto: i.toString(), clase: "numero-normal" });
+                }
+            }
+            return resultados;
+        }
+
+        // Mostrar resultados en el DOM
+        function mostrarResultados(resultados) {
+            const contenedor = document.getElementById("resultado");
+            contenedor.innerHTML = "";
+            
+            resultados.forEach(r => {
+                const div = document.createElement("div");
+                div.className = `linea-resultado ${r.clase}`;
+                div.innerHTML = `➡️ ${r.valor}: <strong>${r.texto}</strong>`;
+                contenedor.appendChild(div);
+            });
+        }
+
+        // Evento del botón
+        document.getElementById("btnGenerar").addEventListener("click", function() {
+            let numero = parseInt(document.getElementById("numeroInput").value);
+            
+            // Validación segura (buena práctica vista en la cápsula)
+            if (isNaN(numero) || numero < 1) {
+                document.getElementById("resultado").innerHTML = 
+                    '<div class="alert alert-danger m-0">⚠️ Error: Debe ingresar un número válido mayor o igual a 1.</div>';
+                return;
+            }
+            
+            const resultados = procesarNumeros(numero);
+            mostrarResultados(resultados);
+        });
+    </script>
+    
+    <script src="../js/main.js"></script>
+</body>
+</html>
